@@ -53,6 +53,9 @@ android {
 
 dependencies {
 
+
+    implementation("com.google.ai.client.generativeai:generativeai:0.7.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
