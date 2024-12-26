@@ -17,10 +17,10 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.random.Random
 
-class BakingViewModel : ViewModel() {
-    private val _uiState: MutableStateFlow<UiState> =
+class GameViewModel : ViewModel() {
+    private val _uiState: MutableStateFlow<UiState<String>> =
         MutableStateFlow(UiState.Initial)
-    val uiState: StateFlow<UiState> =
+    val uiState: StateFlow<UiState<String>> =
         _uiState.asStateFlow()
 
     private val generativeModel = GenerativeModel(

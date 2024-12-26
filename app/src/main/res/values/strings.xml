@@ -8,4 +8,10 @@
     <string name="image2_description">Cookies</string>
     <string name="image3_description">Cake</string>
     <string name="results_placeholder">(Results will appear here)</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="name">Name</string>
+    <string name="guessed_words">Guessed words</string>
+    <string name="action_play">Play!</string>
+    <string name="hint_icon">Get a hint!</string>
+    <string name="hangman_image">Hangman</string>
 </resources>
