@@ -52,7 +52,7 @@ fun LeaderboardScreen(
         Text(
             text = stringResource(R.string.leaderboard),
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(16.dp).align(Alignment.CenterHorizontally)
+            modifier = Modifier.padding(40.dp).align(Alignment.CenterHorizontally)
         )
 
         if (uiState is UiState.Loading) {
