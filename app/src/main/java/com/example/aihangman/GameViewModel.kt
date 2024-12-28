@@ -49,7 +49,7 @@ class GameViewModel : ViewModel() {
         }
     )
 
-    private fun getRandomWord(context: Context): String {
+    fun getRandomWord(context: Context): String {
         val inputStream = context.assets.open("slova.txt")
         val words = mutableListOf<String>()
         BufferedReader(InputStreamReader(inputStream)).use { reader ->
@@ -60,25 +60,25 @@ class GameViewModel : ViewModel() {
         return words[Random.nextInt(words.size)]
     }
 
-    fun sendPrompt(context: Context)
+    fun getHints(context: Context, word: String)
     {
         _uiState.value = UiState.Loading
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val randomWord = getRandomWord(context)
                 val response = generativeModel.generateContent(
                     content {
-                        text("A random czech word that the user will be guessing in the Hangman game is: . " + randomWord +
-                                ". Generate a list of three hints (in czech) that will help user to guess this word." +
-                                "Order these hints from the most unclear one to the most obvious one." +
+                        text(
+                            "A random czech word that the user will be guessing in the Hangman game is: . " + word +
+                                    ". Generate a list of three hints (in czech) that will help user to guess this word." +
+                                    "Order these hints from the most unclear one to the most obvious one." +
                                 "The hints should not mention the structure of the word itself, nor the letters that it contains." +
                                 "The hints should be as diverse as possible, so that they do not overlap in meaning." +
                                 "The hints must not contain the word itself, nor any of its derivatives.")
                     }
                 )
                 response.text?.let { outputContent ->
-                    _uiState.value = UiState.Success(outputContent + " " + randomWord)
+                    _uiState.value = UiState.Success(outputContent)
                 }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(e.localizedMessage ?: "")
