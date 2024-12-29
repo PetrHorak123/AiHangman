@@ -22,6 +22,9 @@ Projekt je napsán v jazyce Kotlin a využívá frameworky jako Jetpack Compose 
 4. Přidejte svůj API klíč do souboru `BuildConfig`.
 5. Spusťte aplikaci na emulátoru nebo fyzickém zařízení.
 
+
+.apk si můžete stáhnout [zde](https://github.com/PetrHorak123/AiHangman/releases).
+
 ## Použití
 
 1. Spusťte aplikaci a zvolte si uživatelské jméno.
