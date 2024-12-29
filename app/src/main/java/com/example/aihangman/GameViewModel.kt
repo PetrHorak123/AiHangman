@@ -8,6 +8,7 @@ import com.google.ai.client.generativeai.type.FunctionType
 import com.google.ai.client.generativeai.type.Schema
 import com.google.ai.client.generativeai.type.content
 import com.google.ai.client.generativeai.type.generationConfig
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +19,8 @@ import java.io.InputStreamReader
 import kotlin.random.Random
 
 class GameViewModel : ViewModel() {
+    private val db = FirebaseFirestore.getInstance()
+
     private val _uiState: MutableStateFlow<UiState<String>> =
         MutableStateFlow(UiState.Initial)
     val uiState: StateFlow<UiState<String>> =
@@ -82,6 +85,22 @@ class GameViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(e.localizedMessage ?: "")
+            }
+        }
+    }
+
+    // Function to increment users guessed words count
+    fun incrementGuessedWords(deviceId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val docRef = db.collection("users").document(deviceId)
+            docRef.get().addOnSuccessListener { document ->
+                if (document != null) {
+                    val user = document.toObject(User::class.java)
+                    user?.let {
+                        val newGuessedWords = it.guessedWords + 1
+                        docRef.update("guessedWords", newGuessedWords)
+                    }
+                }
             }
         }
     }

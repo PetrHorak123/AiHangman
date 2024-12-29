@@ -1,5 +1,6 @@
 package com.example.aihangman
 
+import android.provider.Settings
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -88,7 +89,40 @@ fun GameScreen(
     BasicTextField(
         value = "",
         onValueChange = {
-            println(it)
+            // Game logic
+            if (it.lowercase().isNotEmpty()) {
+                if (word.contains(it.lowercase())) {
+                    val indices = word.indices.filter { index -> word[index] == it.lowercase()[0] }
+                    result = result.toCharArray().also { chars ->
+                        indices.forEach { index ->
+                            chars[index] = it.lowercase()[0]
+                        }
+                    }.joinToString("")
+                } else {
+                    errorCount++
+                }
+            }
+
+            //Win/Lose conditions
+            if (result == word && errorCount < 8) {
+                coroutineScope.launch {
+                    isSnackbarVisible = true
+                    snackbarHostState.showSnackbar("You win! \n +1 guessed word")
+                    isSnackbarVisible = false
+                }
+
+                val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                gameViewModel.incrementGuessedWords(deviceId)
+
+            } else if (errorCount == 8) {
+                result = word
+                coroutineScope.launch {
+                    isSnackbarVisible = true
+                    snackbarHostState.showSnackbar("You lose!")
+                    isSnackbarVisible = false
+                }
+            }
+
 
             input += it
         },
@@ -226,6 +260,21 @@ fun GameScreen(
                         .align(Alignment.CenterHorizontally),
                     style = MaterialTheme.typography.headlineLarge
                 )
+
+                // If the game is over, display a button to navigate to the leaderboard screen
+                if (result == word || errorCount == 8) {
+                    Button(
+                        onClick = {
+                            navController.navigate("leaderboard") {
+                                popUpTo("game") { inclusive = true }
+                            }
+                        },
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                    ) {
+                        Text("Go to leaderboard")
+                    }
+                }
             }
 
             // Display a loading indicator in the center of the screen
