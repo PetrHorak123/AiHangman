@@ -13,10 +13,7 @@ Projekt je napsán v jazyce Kotlin a využívá frameworky jako Jetpack Compose 
 
 ## Instalace
 
-1. Klonujte tento repozitář:
-    ```sh
-    git clone https://github.com/PetrHorak123/ai-hangman.git
-    ```
+1. Klonujte tento repozitář.
 2. Otevřete projekt v Android Studio.
 3. Vytvořte si Gemini API klíč v Google AI Studio [zde](https://aistudio.google.com/app/apikey). 
 4. Přidejte svůj API klíč do souboru `BuildConfig`.
